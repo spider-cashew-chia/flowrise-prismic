@@ -1,8 +1,8 @@
 {
-  "id": "testimonials",
+  "id": "testimonial",
   "type": "SharedSlice",
-  "name": "Testimonials",
-  "description": "Testimonials",
+  "name": "Testimonial",
+  "description": "Testimonial",
   "variations": [
     {
       "id": "default",

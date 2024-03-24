@@ -4,7 +4,12 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type HomepageDocumentDataSlicesSlice = FeaturesSlice | HeroSlice;
+type HomepageDocumentDataSlicesSlice =
+  | TestimonialSlice
+  | TextWithImageSlice
+  | CallToActionSlice
+  | FeaturesSlice
+  | HeroSlice;
 
 /**
  * Content for Homepage documents
@@ -546,63 +551,63 @@ type HeroSliceVariation = HeroSliceDefault | HeroSliceHorizontal;
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
- * Primary content in *Testimonials → Primary*
+ * Primary content in *Testimonial → Primary*
  */
-export interface TestimonialsSliceDefaultPrimary {
+export interface TestimonialSliceDefaultPrimary {
   /**
-   * Heading field in *Testimonials → Primary*
+   * Heading field in *Testimonial → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: testimonials.primary.heading
+   * - **API ID Path**: testimonial.primary.heading
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   heading: prismic.RichTextField;
 }
 
 /**
- * Primary content in *Testimonials → Items*
+ * Primary content in *Testimonial → Items*
  */
-export interface TestimonialsSliceDefaultItem {
+export interface TestimonialSliceDefaultItem {
   /**
-   * Testimonial field in *Testimonials → Items*
+   * Testimonial field in *Testimonial → Items*
    *
    * - **Field Type**: Content Relationship
    * - **Placeholder**: *None*
-   * - **API ID Path**: testimonials.items[].testimonial
+   * - **API ID Path**: testimonial.items[].testimonial
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
   testimonial: prismic.ContentRelationshipField<"testimonial">;
 }
 
 /**
- * Default variation for Testimonials Slice
+ * Default variation for Testimonial Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slice
  */
-export type TestimonialsSliceDefault = prismic.SharedSliceVariation<
+export type TestimonialSliceDefault = prismic.SharedSliceVariation<
   "default",
-  Simplify<TestimonialsSliceDefaultPrimary>,
-  Simplify<TestimonialsSliceDefaultItem>
+  Simplify<TestimonialSliceDefaultPrimary>,
+  Simplify<TestimonialSliceDefaultItem>
 >;
 
 /**
- * Slice variation for *Testimonials*
+ * Slice variation for *Testimonial*
  */
-type TestimonialsSliceVariation = TestimonialsSliceDefault;
+type TestimonialSliceVariation = TestimonialSliceDefault;
 
 /**
- * Testimonials Shared Slice
+ * Testimonial Shared Slice
  *
- * - **API ID**: `testimonials`
- * - **Description**: Testimonials
+ * - **API ID**: `testimonial`
+ * - **Description**: Testimonial
  * - **Documentation**: https://prismic.io/docs/slice
  */
-export type TestimonialsSlice = prismic.SharedSlice<
-  "testimonials",
-  TestimonialsSliceVariation
+export type TestimonialSlice = prismic.SharedSlice<
+  "testimonial",
+  TestimonialSliceVariation
 >;
 
 /**
@@ -754,11 +759,11 @@ declare module "@prismicio/client" {
       HeroSliceVariation,
       HeroSliceDefault,
       HeroSliceHorizontal,
-      TestimonialsSlice,
-      TestimonialsSliceDefaultPrimary,
-      TestimonialsSliceDefaultItem,
-      TestimonialsSliceVariation,
-      TestimonialsSliceDefault,
+      TestimonialSlice,
+      TestimonialSliceDefaultPrimary,
+      TestimonialSliceDefaultItem,
+      TestimonialSliceVariation,
+      TestimonialSliceDefault,
       TextWithImageSlice,
       TextWithImageSliceDefaultPrimary,
       TextWithImageSliceImageRightPrimary,
