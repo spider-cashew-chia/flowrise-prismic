@@ -29,7 +29,7 @@ const components: JSXMapSerializer = {
 /**
  * Props for `Testimonial`.
  */
-export type TestimonialsProps = SliceComponentProps<Content.TestimonialsSlice>;
+export type TestimonialsProps = SliceComponentProps<Content.TestimonialSlice>;
 
 /**
  * Component for "Testimonial" Slices.
