@@ -4,7 +4,10 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type HomepageDocumentDataSlicesSlice = HeroSlice;
+type HomepageDocumentDataSlicesSlice =
+  | TestimonialSlice
+  | FeaturesSlice
+  | HeroSlice;
 
 /**
  * Content for Homepage documents
@@ -170,7 +173,155 @@ export type SettingsDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = HomepageDocument | SettingsDocument;
+/**
+ * Content for Testimonial documents
+ */
+interface TestimonialsDocumentData {
+  /**
+   * Name field in *Testimonial*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testimonials.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Job title field in *Testimonial*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testimonials.job_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  job_title: prismic.KeyTextField;
+
+  /**
+   * Quote field in *Testimonial*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testimonials.quote
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  quote: prismic.RichTextField;
+
+  /**
+   * Avatar field in *Testimonial*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testimonials.avatar
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  avatar: prismic.ImageField<never>;
+}
+
+/**
+ * Testimonial document from Prismic
+ *
+ * - **API ID**: `testimonials`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TestimonialsDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<TestimonialsDocumentData>,
+    "testimonials",
+    Lang
+  >;
+
+export type AllDocumentTypes =
+  | HomepageDocument
+  | SettingsDocument
+  | TestimonialsDocument;
+
+/**
+ * Primary content in *Features → Primary*
+ */
+export interface FeaturesSliceDefaultPrimary {
+  /**
+   * Heading field in *Features → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Features → Items*
+ */
+export interface FeaturesSliceDefaultItem {
+  /**
+   * Icon field in *Features → Items*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.items[].icon
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  icon: prismic.SelectField<"calendar" | "bargraph" | "clover" | "hourglass">;
+
+  /**
+   * Title field in *Features → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.items[].title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Description field in *Features → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.items[].description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+}
+
+/**
+ * Default variation for Features Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FeaturesSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<FeaturesSliceDefaultPrimary>,
+  Simplify<FeaturesSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Features*
+ */
+type FeaturesSliceVariation = FeaturesSliceDefault;
+
+/**
+ * Features Shared Slice
+ *
+ * - **API ID**: `features`
+ * - **Description**: Features
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FeaturesSlice = prismic.SharedSlice<
+  "features",
+  FeaturesSliceVariation
+>;
 
 /**
  * Primary content in *Hero → Primary*
@@ -322,6 +473,66 @@ type HeroSliceVariation = HeroSliceDefault | HeroSliceHorizontal;
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
+/**
+ * Primary content in *Testimonials → Primary*
+ */
+export interface TestimonialSliceDefaultPrimary {
+  /**
+   * Heading field in *Testimonials → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testimonial.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *Testimonials → Items*
+ */
+export interface TestimonialSliceDefaultItem {
+  /**
+   * Testimonial field in *Testimonials → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: testimonial.items[].testimonial
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  testimonial: prismic.ContentRelationshipField<"testimonials">;
+}
+
+/**
+ * Default variation for Testimonials Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TestimonialSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<TestimonialSliceDefaultPrimary>,
+  Simplify<TestimonialSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Testimonials*
+ */
+type TestimonialSliceVariation = TestimonialSliceDefault;
+
+/**
+ * Testimonials Shared Slice
+ *
+ * - **API ID**: `testimonial`
+ * - **Description**: Testimonial
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TestimonialSlice = prismic.SharedSlice<
+  "testimonial",
+  TestimonialSliceVariation
+>;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
@@ -338,13 +549,25 @@ declare module "@prismicio/client" {
       SettingsDocument,
       SettingsDocumentData,
       SettingsDocumentDataNavigationItem,
+      TestimonialsDocument,
+      TestimonialsDocumentData,
       AllDocumentTypes,
+      FeaturesSlice,
+      FeaturesSliceDefaultPrimary,
+      FeaturesSliceDefaultItem,
+      FeaturesSliceVariation,
+      FeaturesSliceDefault,
       HeroSlice,
       HeroSliceDefaultPrimary,
       HeroSliceHorizontalPrimary,
       HeroSliceVariation,
       HeroSliceDefault,
       HeroSliceHorizontal,
+      TestimonialSlice,
+      TestimonialSliceDefaultPrimary,
+      TestimonialSliceDefaultItem,
+      TestimonialSliceVariation,
+      TestimonialSliceDefault,
     };
   }
 }
